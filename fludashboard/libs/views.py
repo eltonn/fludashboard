@@ -103,6 +103,43 @@ def index():
         last_week_years=last_week_years
     )
 
+@app.route("/covid-19")
+def covid19():
+    """
+
+    :return:
+    """
+    global epiyearmax
+    global epiweekmax
+    if not APP_AVAILABLE:
+        return render_template("unavailable.html")
+
+    # read data to get the list of available years
+    df = fluDB.read_data(
+        table_name='current_estimated_values',
+        dataset_id=1, scale_id=1, territory_id=0
+    )
+
+    # Here the code should receive the user-requested year.
+    # By default should be the current or latest available
+    list_of_years = list(set(df.epiyear))
+
+    epiyearmax = df.epiyear.max()
+    epiweekmax = df.epiweek[df.epiyear == epiyearmax].max()
+
+    last_week_years = {
+        y: calc_last_epiweek(y) for y in list_of_years
+    }
+
+
+    return render_template(
+        "covid-19.html",
+        current_epiweek=epiweekmax,
+        list_of_years=sorted(list_of_years, reverse=True),
+        last_year=epiyearmax,
+        last_week_years=last_week_years
+    )
+
 
 @app.route("/help")
 def app_help():
@@ -169,7 +206,6 @@ def data__weekly_incidence_curve(
 
     try:
         ks += ['estimated_cases', 'ci_lower', 'ci_upper']
-
         k = 'estimated_cases'
         ks.pop(ks.index(k))
         ks.insert(ks.index('value') + 1, k)
@@ -293,6 +329,7 @@ def data__incidence_levels(
     df = pd.DataFrame(se).T
     df['regular_seasons'] = regular_seasons
 
+    #df.to_csv("~/levels.csv")
     return df.to_json(orient='records')
 
 

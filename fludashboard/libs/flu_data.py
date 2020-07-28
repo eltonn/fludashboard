@@ -1,10 +1,10 @@
+
 from unidecode import unidecode
 # local
 from ..settings import DATABASE
 
 import pandas as pd
 import sqlalchemy as sqla
-
 
 # @deprecated
 def prepare_keys_name(df):
@@ -28,6 +28,7 @@ class FluDB:
     conn = None
 
     def __init__(self):
+
         dsn = 'postgresql://%(USER)s:%(PASSWORD)s@%(HOST)s:%(PORT)s/%(NAME)s'
         self.conn = sqla.create_engine(dsn % DATABASE)
 
@@ -318,6 +319,7 @@ class FluDB:
         :param territory_type_id:
         :return:
         """
+
         sql = '''
         SELECT
           mem_typical.dataset_id AS dataset_id,
@@ -576,7 +578,6 @@ class FluDB:
             )
 
         sql = sql % sql_param
-
         with self.conn.connect() as conn:
             return pd.read_sql(sql, conn)
 

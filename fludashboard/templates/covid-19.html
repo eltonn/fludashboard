@@ -23,10 +23,9 @@
   </style>
 </head>
 <body class="contingency-view">
-<form action="" method="get" name="indexForm" id="indexForm">
 <div class="navbar navbar-dark bg-primary" role="navigation">
   <iframe src="./super-header" class="super-header" scrolling="no"></iframe>
-
+  
   <div class="container-fluid">
     <div class="navbar-header" style="margin:5px">
       <a class="navbar-brand-custom" href="./"><strong>Monitoramento de casos
@@ -57,22 +56,23 @@
             <div class="card-block">
               <div class="criteria-box">
                 <input
-                    id="btn-detailed"
+                    id="btn-detailed" name="btn-detailed"
                     type="button" value="Detalhado (semana)"
                     class="view_name tab">
                 <input
-                    id="btn-resumed"
+                    id="btn-resumed" name="btn-resumed"
                     type="button" value="Resumido (ano)"
                     class="view_name tab">
                 <input
-                    id="btn-contingency"
+                    id="btn-contingency" name="btn-contingency"
                     type="button" value="Plano de Contingência atual"
-                    class="view_name tab selected">
+                    class="view_name tab">
                 <input
                     id="btn-covid19" name="btn-covid19"
-                    type="button" value="Covid-19"
-                    class="view_name tab">
+                    type="button" value="Covid-19" 
+                    class="view_name tab selected">
               </div>
+            <!-- filtros: indisponível para issue #174
               <div class="criteria-box" id="div-dataset">
                 <label>Conjunto de dados:</label> <br/>
                 <select name="dataset" id="dataset">
@@ -84,6 +84,7 @@
                   <option value="6">OBITO</option>
                 </select>
               </div>
+            -->
               <div class="criteria-box" id="div-scale">
                 <label>Escala:</label> <br/>
                 <select name="scale" id="scale">
@@ -97,6 +98,7 @@
                        name="radTerritoryType[]"
                        checked="checked"
                        value="1"> Por UF
+              <!-- filtros: indisponível para issue #174
                 <br/>
                 <input type="radio"
                        id="radTerritoryTypeRegion"
@@ -109,6 +111,7 @@
                        name="radTerritoryType[]"
                        value="2"
                 > Por padrão de circulação
+              -->
               </div>
               <div class="criteria-box" id="div-year">
                 <strong>Ano:</strong>
@@ -121,6 +124,7 @@
                   {%endfor%}
                 </select>
               </div>
+            <!-- filtros: indisponível para issue #174
               <div id="div-week" class="criteria-box">
                 <div data-role="main" class="ui-content">
                   <label for="week">Semana:</label>
@@ -132,6 +136,7 @@
                          value="{{current_epiweek}}" min="1" max="52"/>
                 </div>
               </div>
+            -->
               <input type="hidden" id="selected-territory" value=""/>
             </div>
           </div>
@@ -241,92 +246,45 @@
     <!-- Resources Pie -->
 
   </div>
-  <div class="row my-1" id="row2">
-    <!-- Opportunities -->
-    <div class="col-md-12 col-lg-6">
-        <div class="card">
-          <h6 class="card-header">
-            Intervalos temporais
-            <span class="period-display">na semana epidemiológica</span>
-            <span class="week-display"></span>
-            <span class="territory-display"></span>
-          </h6>
-          <div class="container">
-            <button type="button" class="btn btn-link btn-sm line1 no-print">
-              <font color="white" style="opacity:0">Salvar imagem</font></button>
-          </div>
+  
+  <!-- Row Covid-19-->
+<div class="row my-1" id="row4">
 
-          <div class="card-body p-2 content-height" style="overflow-x: auto; overflow-y: hidden"
-               id="opportunities-chart"></div>
-          <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
-          </small></p>
-        </div>
+  <!-- Lab -->
+  <div class="col-md-12 col-lg-6">
+    <div class="card">
+      <h6 class="card-header">
+        Exames laboratoriais
+        <span class="period-display">na semana epidemiológica</span>
+        <span class="week-display"></span>
+        <span class="territory-display"></span>
+      </h6>
 
-    </div>
-
-    <!-- Gender/Age Distribution -->
-    <div class="col-md-12 col-lg-6">
-      <div class="card bg-white" id="age-card">
-        <h6 class="card-header">
-          Distribuição por Gênero/Idade
-            <span class="period-display-agedist">na semana epidemiológica</span>
-            <span class="week-display"></span>
-            <span class="territory-display"></span>
-        </h6>
-        <div class="container">
-          <button type="button" class="btn btn-link btn-sm line1 no-print" onclick="getscreenshot(17);">
-            Salvar imagem</button>
-        </div>
-        <div class="card-block p-2 content-height" id="age-chart">
-        </div>
-
-        <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
-        </small></p>
+      <div class="card-block">
+        <div class="card-body content-height" id="etiological-chart" style="overflow-y:scroll;"></div>
       </div>
-
+      <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
+      </small></p>
     </div>
   </div>
 
-  <div class="row my-1" id="row3">
-
-    <!-- Lab -->
-    <div class="col-md-12 col-lg-6">
-      <div class="card">
-        <h6 class="card-header">
-          Exames laboratoriais
-          <span class="period-display">na semana epidemiológica</span>
+  <!-- Table -->
+  <div class="col-md-12 col-lg-6">
+    <div class="card">
+      <h6 class="card-header">
+          <span id="table-incidence-case-title">Incidência</span>
+          <span class="period-display-agedist">na semana epidemiológica</span>
           <span class="week-display"></span>
           <span class="territory-display"></span>
-        </h6>
-
-        <div class="card-block">
-          <div class="card-body content-height" id="etiological-chart" style="overflow-y:scroll;"></div>
-        </div>
-        <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
-        </small></p>
+      </h6>
+      <div class="card-block p-2 content-height line1" id="divTable"
+           style="overflow-y:auto;">
       </div>
-    </div>
-
-    <!-- Table -->
-    <div class="col-md-12 col-lg-6">
-      <div class="card">
-        <h6 class="card-header">
-            <span id="table-incidence-case-title">Incidência</span>
-            <span class="period-display-agedist">na semana epidemiológica</span>
-            <span class="week-display"></span>
-            <span class="territory-display"></span>
-        </h6>
-        <div class="card-block p-2 content-height line1" id="divTable"
-             style="overflow-y:auto;">
-        </div>
-        <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
-        </small></p>
-      </div>
+      <p class="card-text"><small class="text-muted">*Com base nos dados disponíveis no sistema de informação
+      </small></p>
     </div>
   </div>
-
-
-
+</div>
 </div>
 
 <script src="./static/libs/jquery/jquery.js"></script>
@@ -352,43 +310,19 @@
 <script src="./static/js/flu_chart.js"></script>
 <script src="./static/js/dashboard.js"></script>
 <script language="JavaScript" type="text/javascript">
-
   function getscreenshot(myplot) {
     var plotName = ['mapa', 'mapa-legenda', 'serie-temporal', 'interavlos-temporais', 'distribuicao-etaria'];
     var myplotObj = {SVGid: myplot, SVGname: plotName[Math.min(myplot,4)]};
 
     singleSVGcrowbar(myplotObj);
   }
-
 </script>
+
 <script language="JavaScript">
-  $(document).ready(function(){
-
-    const queryString = window.location.href.match(/\#filter-type\=.*/gm);
-    if (queryString != null) {
-
-      const filterType = queryString[0].replace('#filter-type=', '');
-
-      switch (filterType) {
-        case "detailed":
-          $('#btn-detailed').addClass('selected');
-          break;
-        case 'resumed':
-          $('#btn-resumed').addClass('selected');
-          break;
-        case 'contingency':
-          $('#btn-contingency').addClass('selected');
-          break;
-        default:
-          $('#btn-covid19').addClass('selected');
-          break;
-      }
-    }
-
-    dashboard = new Dashboard({{last_week_years}});
-    dashboard.init();
-  });
+    $(document).ready(function(){
+      dashboard = new Dashboard({{last_week_years}});
+      dashboard.init();
+    });
 </script>
-</form>
 </body>
 </html>

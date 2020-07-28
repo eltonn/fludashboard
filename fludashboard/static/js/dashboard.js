@@ -54,18 +54,25 @@ class Dashboard {
     $('#year').change(function () {_this.load_graphs();});
 
     $('#btn-detailed').click(function(){
+      window.location.href='/#filter-type=detailed';
       _this.prepare_detailed_dashboard();
       _this.changeWeek();
     });
 
     $('#btn-resumed').click(function(){
+      window.location.href='/#filter-type=resumed';
       _this.prepare_resumed_dashboard();
       _this.changeWeek();
     });
 
     $('#btn-contingency').click(function(){
+      window.location.href='/#filter-type=contingency';
       _this.prepare_contingency_dashboard();
       _this.changeWeek();
+    });
+
+    $('#btn-covid19').click(function(){
+      window.location.href='/covid-19';
     });
 
     // week
@@ -118,8 +125,10 @@ class Dashboard {
       this.prepare_detailed_dashboard();
     } else if ($('#btn-resumed').hasClass('selected')) {
       this.prepare_resumed_dashboard();
-    } else {
+    } else if ($('#btn-contingency').hasClass('selected')) {
       this.prepare_contingency_dashboard();
+    } else {
+      this.prepare_covid19_dashboard();
     }
 
     this.load_graphs();
@@ -131,6 +140,7 @@ class Dashboard {
       $('body').addClass('detailed-view');
       $('body').removeClass('resumed-view');
       $('body').removeClass('contingency-view');
+      $('body').removeClass('covid19-view');
 
       $('#week').attr('min', 1);
       $('#week').val(this.lastWeek);
@@ -138,11 +148,13 @@ class Dashboard {
       $('#div-year').removeClass('hidden');
       $('#row2').removeClass('hidden');
       $('#row3').removeClass('hidden');
+      $('#row4').removeClass('hidden');
       $('#div-dataset').removeClass('hidden');
       $('#div-scale').removeClass('hidden');
 
       $('#btn-resumed').removeClass('selected');
       $('#btn-contingency').removeClass('selected');
+      $('#btn-covid19').removeClass('selected');
       $('#btn-detailed').addClass('selected');
 
       $('.period-display-agedist').text('na semana epidemiológica');
@@ -159,11 +171,13 @@ class Dashboard {
       $('body').removeClass('detailed-view');
       $('body').addClass('resumed-view');
       $('body').removeClass('contingency-view');
+      $('body').removeClass('covid19-view');
 
       $('#div-week').addClass('hidden');
       $('#div-year').removeClass('hidden');
       $('#row2').removeClass('hidden');
       $('#row3').removeClass('hidden');
+      $('#row4').removeClass('hidden');
       $('#div-dataset').removeClass('hidden');
       $('#div-scale').removeClass('hidden');
 
@@ -179,6 +193,7 @@ class Dashboard {
       $('#btn-detailed').removeClass('selected');
       $('#btn-contingency').removeClass('selected');
       $('#btn-resumed').addClass('selected');
+      $('#btn-covid19').removeClass('selected');
 
       $('.period-display-agedist').text('no ano epidemiológico');
       $('.period-display').text('no ano epidemiológico');
@@ -194,11 +209,13 @@ class Dashboard {
       $('body').removeClass('detailed-view');
       $('body').removeClass('resumed-view');
       $('body').addClass('contingency-view');
+      $('body').removeClass('covid19-view');
 
       $('#div-week').addClass('hidden');
       $('#div-year').addClass('hidden');
       $('#row2').addClass('hidden');
       $('#row3').addClass('hidden');
+      $('#row4').addClass('hidden');
       $('#div-dataset').removeClass('hidden');
       $('#div-scale').removeClass('hidden');
 
@@ -215,6 +232,7 @@ class Dashboard {
 
       $('#btn-detailed').removeClass('selected');
       $('#btn-resumed').removeClass('selected');
+      $('#btn-covid19').removeClass('selected');
       $('#btn-contingency').addClass('selected');
 
       $('.period-display-agedist').text('no ano epidemiológico');
@@ -226,6 +244,66 @@ class Dashboard {
       $('#map-leg-high').text('Nível 1');
       $('#map-leg-very-high').text('Nível 2');
   }
+
+
+  prepare_covid19_dashboard() {
+    $('body').removeClass('detailed-view');
+    $('body').removeClass('resumed-view');
+    $('body').removeClass('contingency-view');
+    $('body').addClass('covid19-view');
+
+    /*$('#div-week').addClass('hidden');
+    $('#div-year').addClass('hidden');
+    $('#row2').addClass('hidden');
+    $('#row3').addClass('hidden');
+    $('#div-dataset').removeClass('hidden');
+    $('#div-scale').removeClass('hidden');*/
+
+    $('#week').attr('min', 1);
+    $('#week').val(this.lastWeek);
+    $('#div-week').removeClass('hidden');
+    $('#div-year').removeClass('hidden');
+    $('#row2').removeClass('hidden');
+    $('#row3').removeClass('hidden');
+    $('#row4').removeClass('hidden');
+    $('#div-dataset').removeClass('hidden');
+    $('#div-scale').removeClass('hidden');
+
+    /*var _week = parseInt($('#week').val() || 0);
+
+    if (_week > 0) {
+      this.lastWeek = _week;
+    }
+
+    $('#week').attr('min', 0);
+    $('#week').val(0);
+
+    $('#year').val($('#year option:first').val());*/
+
+    $('#btn-detailed').removeClass('selected');
+    $('#btn-resumed').removeClass('selected');
+    $('#btn-covid19').addClass('selected');
+    $('#btn-contingency').removeClass('selected');
+
+    /*$('.period-display-agedist').text('no ano epidemiológico');
+    $('.period-display').text('no ano epidemiológico');
+    $('#map-incidence-case-title').text('Mapa do Plano de Contingência');
+    $('#map-legend-title').text('Nível de ação');
+    $('#map-leg-low').text('Nível Basal');
+    $('#map-leg-medium').text('Nível 0');
+    $('#map-leg-high').text('Nível 1');
+    $('#map-leg-very-high').text('Nível 2');*/
+
+    $('.period-display-agedist').text('na semana epidemiológica');
+    $('.period-display').text('até a semana epidemiológica');
+    $('#map-incidence-case-title').text('Mapa de incidência de SRAG');
+    $('#map-legend-title').text('Situação da atividade semanal');
+    $('#map-leg-low').text('Baixa');
+    $('#map-leg-medium').text('Epidêmica');
+    $('#map-leg-high').text('Alta');
+    $('#map-leg-very-high').text('Muito alta');
+  }
+
 
   /**
    * load data and build charts

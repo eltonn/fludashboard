@@ -7,7 +7,7 @@ sphinx_rtd_theme
 sh
 
 # from notebooks
-jupyter
+jupyterlab
 jupyter_nbextensions_configurator
 bokeh
 holoviews

@@ -56,6 +56,24 @@ body.detailed-view .alert-very-high {
   fill: #88419d;
 }
 
+body.covid19-view .alert-low {
+  stroke: #aaaaaa;
+  background: #ffffff;
+  fill: #edf8fb;
+}
+body.covid19-view .alert-medium {
+  background: #ffffff;
+  fill: #b3cde3;
+}
+body.covid19-view .alert-high {
+  background: #ffffff;
+  fill: #9f8cc6;
+}
+body.covid19-view .alert-very-high {
+  background: #ffffff;
+  fill: #88419d;
+}
+
 .chart-extra-text{
   font-size: 10px;
   background-color:rgba(255, 255, 255, 0.5);
